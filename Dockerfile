@@ -21,4 +21,4 @@ RUN mkdir work
 WORKDIR /work
 RUN git clone https://github.com/saisho0206/qiita-tuto.git
 
-CMD["/bin/bash"]
+CMD ["/bin/bash"]
