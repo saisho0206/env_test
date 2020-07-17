@@ -1,72 +1,18 @@
-# OSはCentOS
-FROM centos:latest
+# Docker file
+FROM centos:7
 
-# 各パッケージをインストール
-# pipやvirtualenvインストールも想定しています。
 RUN yum -y update
-RUN yum -y groupinstall "Development Tools"
-RUN yum -y install \
-           kernel-devel \
-           kernel-headers \
-           gcc-c++ \
-           patch \
-           libyaml-devel \
-           libffi-devel \
-           autoconf \
-           automake \
-           make \
-           libtool \
-           bison \
-           tk-devel \
-           zip \
-           wget \
-           tar \
-           gcc \
-           zlib \
-           zlib-devel \
-           bzip2 \
-           bzip2-devel \
-           readline \
-           readline-devel \
-           sqlite \
-           sqlite-devel \
-           openssl \
-           openssl-devel \
-           git \
-           gdbm-devel \
-           python-devel
-
-# Python3.5.2をインストール
-# Python3.5.2をダウンロード
-WORKDIR /root
-RUN wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz
-RUN tar xzvf Python-3.5.2.tgz
-
-# makeでインストール
-WORKDIR ./Python-3.5.2
-RUN ./configure --with-threads
-RUN make install
-
-# pipインストール(最新版)
-RUN wget https://bootstrap.pypa.io/get-pip.py
-RUN python get-pip.py
-
-# readlineインストール
-RUN pip install readline
-
-# virtualenvインストール
-RUN pip install virtualenv
-
-# Djangoインストール
-RUN pip install django
-
-# おまけ
-# Django以外のフレームワークインストール
-# bottleインストール
-# RUN pip install bottle
-
-# Flaskインストール
-# RUN pip install Flask
+RUN yum -y install https://repo.ius.io/ius-release-el7.rpm
+RUN yum search python36
+RUN yum -y install python36u python36u-libs python36u-devel python36u-pip
+RUN ln -s /usr/bin/pip3.6 /usr/local/bin/pip
+RUN yum -y install postgresql-devel
+RUN yum -y install python-psycopg2
+RUN pip install psycopg2-binary
+RUN yum -y install gcc
+RUN pip install psycopg2
+RUN yum -y install git
+RUN git clone https://github.com/saisho0206/qiita-tuto.git
 
 WORKDIR /root
-CMD ["/bin/bash"]
+CMD["/bin/bash"]
